@@ -8,7 +8,7 @@ module Fluent
     config_param :host, :string, default: nil
     config_param :port, :integer, default: 12201
 
-    attr_reader :graylog_host
+    attr_reader :endpoint
 
     def initialize
       super
@@ -21,8 +21,6 @@ module Fluent
 
     def start
       super
-      # Setup connection with GrayLog server
-      @graylog_host = TCPSocket.new @host, @port
     end
 
     def shutdown
@@ -37,8 +35,12 @@ module Fluent
     def write(chunk)
       chunk.msgpack_each do |data|
         # Send data to GrayLog
-        graylog_host.write "#{JSON.dump(data)}\0" # Frame delimited by null char
+        endpoint.write "#{JSON.dump(data)}\0" # Frame delimited by null char
       end
+    end
+
+    def endpoint
+      @endpoint ||= TCPSocket.new @host, @port
     end
   end
 end
