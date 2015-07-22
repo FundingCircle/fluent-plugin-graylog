@@ -1,8 +1,7 @@
-require "fluent/plugin/graylog/version"
+# require "fluent/plugin/graylog/version"
 
 module Fluent
   class GrayLogOutput < BufferedOutput
-
     Plugin.register_output('graylog', self)
 
     config_param :host, :string, default: nil
@@ -25,6 +24,7 @@ module Fluent
 
     def shutdown
       super
+      endpoint.close unless endpoint.closed?
     end
 
     def format(tag, time, record)
@@ -34,9 +34,16 @@ module Fluent
 
     def write(chunk)
       chunk.msgpack_each do |data|
+        reconnect if endpoint.closed?
+
         # Send data to GrayLog
         endpoint.write "#{JSON.dump(data)}\0" # Frame delimited by null char
       end
+    end
+
+    def reconnect
+      @endpoint = nil
+      endpoint
     end
 
     def endpoint
