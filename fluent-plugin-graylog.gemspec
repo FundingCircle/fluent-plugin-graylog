@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'GrayLog output plugin for Fluentd'
   spec.description   = 'Send logging information in JSON format via TCP to an instance of GrayLog'
+  spec.license       = 'BSD-3-Clause'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec|features)/}) }
   spec.bindir        = 'exe'
