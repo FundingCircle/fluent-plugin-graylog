@@ -45,15 +45,36 @@ describe Fluent::GrayLogOutput do
     let(:endpoint) { StringIO.new }
 
     before do
-      allow(instance).to receive(:endpoint) { endpoint }
+      allow(TCPSocket).to receive(:new) { endpoint }
     end
 
     context 'when the socket is open' do
-      it 'writes messages' do
-        expect(endpoint).to receive(:write).once.with(
-          "{\"verion\":\"1.1\"}\u0000",
-        )
-        driver.run { driver.emit(verion: '1.1') }
+      context 'single message' do
+        it 'writes messages' do
+          expect(endpoint).to receive(:write).once.with(
+            "{\"verion\":\"1.1\"}\u0000",
+          )
+          driver.run { driver.emit(verion: '1.1') }
+        end
+      end
+      context 'multiple messages' do
+        let(:config) do
+          %(
+            type graylog
+            host docker.local
+            port 12201
+            flush_interval 3
+          )
+        end
+        it 'writes messages' do
+          expect(endpoint).to receive(:write).once.with(
+            "{\"name\":\"Bob\"}\u0000{\"name\":\"Alice\"}\u0000",
+          )
+          driver.run do
+            driver.emit(name: 'Bob')
+            driver.emit(name: 'Alice')
+          end
+        end
       end
     end
 

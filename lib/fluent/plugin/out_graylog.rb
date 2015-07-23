@@ -1,10 +1,11 @@
-# rubocop:disable Style/NumericLiterals
 module Fluent
   class GrayLogOutput < BufferedOutput
     Plugin.register_output('graylog', self)
 
+    # rubocop:disable Style/NumericLiterals
     config_param :host, :string, default: nil
     config_param :port, :integer, default: 12201
+    # rubocop:enable Style/NumericLiterals
 
     attr_reader :endpoint
 
@@ -23,7 +24,6 @@ module Fluent
 
     def shutdown
       super
-      endpoint.close unless endpoint.closed?
     end
 
     def format(_tag, _time, record)
@@ -31,23 +31,24 @@ module Fluent
       record.to_msgpack
     end
 
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def write(chunk)
-      chunk.msgpack_each do |data|
-        reconnect if endpoint.closed?
+      records = []
+      chunk.msgpack_each do |record|
+        records.push JSON.dump(record) + "\0" # Message delimited by null char
+      end
 
-        # Send data to GrayLog
-        endpoint.write "#{JSON.dump(data)}\0" # Frame delimited by null char
+      log.debug 'establishing connection with GrayLog'
+      socket = TCPSocket.new @host, @port
+
+      begin
+        log.debug "sending #{records.count} records in batch"
+        socket.write records.join
+      ensure
+        log.debug 'closing connection with GrayLog'
+        socket.close
       end
     end
-
-    def reconnect
-      @endpoint = nil
-      endpoint
-    end
-
-    def endpoint
-      @endpoint ||= TCPSocket.new @host, @port
-    end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
   end
 end
-# rubocop:enable Style/NumericLiterals
