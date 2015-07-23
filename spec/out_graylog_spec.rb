@@ -9,33 +9,33 @@ describe Fluent::GrayLogOutput do
   let(:instance) { driver.instance }
 
   let(:config) do
-    %[
+    %(
       type graylog
       host docker.local
       port 12201
-    ]
+    )
   end
 
-  describe "configuration" do
+  describe 'configuration' do
     context 'when config is valid' do
       it 'uses config and defaults' do
-        expect(instance.config.to_h).to eq({
-          "type" => "graylog",
-          "host" => "docker.local",
-          "port" => "12201",
-        })
+        expect(instance.config.to_h).to eq(
+          'type' => 'graylog',
+          'host' => 'docker.local',
+          'port' => '12201'
+        )
       end
     end
 
     context 'when host is absent' do
       let(:config) do
-        %[
+        %(
           type graylog
           port 12201
-        ]
+        )
       end
 
-      it "requires a host" do
+      it 'requires a host' do
         expect { instance }.to raise_error(Fluent::ConfigError)
       end
     end
@@ -49,11 +49,11 @@ describe Fluent::GrayLogOutput do
     end
 
     context 'when the socket is open' do
-      it "writes messages" do
+      it 'writes messages' do
         expect(endpoint).to receive(:write).once.with(
           "{\"verion\":\"1.1\"}\u0000"
         )
-        driver.run { driver.emit({verion: '1.1'}) }
+        driver.run { driver.emit(verion: '1.1') }
       end
     end
 
@@ -66,7 +66,7 @@ describe Fluent::GrayLogOutput do
         expect(endpoint).to receive(:write).once.with(
           "{\"verion\":\"1.1\"}\u0000"
         )
-        driver.run { driver.emit({verion: '1.1'}) }
+        driver.run { driver.emit(verion: '1.1') }
       end
     end
   end
