@@ -1,10 +1,25 @@
 require 'spec_helper'
 
 describe Fluent::GrayLogOutput do
-  context "configuration" do
-    it "loads configuration from file" do
-      run_driver do |driver|
-        expect(driver.instance.config.to_h).to eq({
+  let(:driver) do
+    Fluent::Test.setup
+    Fluent::Test::OutputTestDriver.new(Fluent::GrayLogOutput).configure(config)
+  end
+
+  let(:instance) { driver.instance }
+
+  let(:config) do
+    %[
+      type graylog
+      host docker.local
+      port 12201
+    ]
+  end
+
+  describe "configuration" do
+    context 'when config is valid' do
+      it 'uses config and defaults' do
+        expect(instance.config.to_h).to eq({
           "type" => "graylog",
           "host" => "docker.local",
           "port" => "12201",
@@ -12,25 +27,51 @@ describe Fluent::GrayLogOutput do
       end
     end
 
-    it "requires a host" do
-      conf = %[
-        type graylog
-        port 12201
-      ]
+    context 'when host is absent' do
+      let(:config) do
+        %[
+          type graylog
+          port 12201
+        ]
+      end
 
-      expect { run_driver(conf) }.to raise_error(Fluent::ConfigError)
+      it "requires a host" do
+        expect { instance }.to raise_error(Fluent::ConfigError)
+      end
     end
   end
 
-  it "writes messages" do
-    run_driver do |driver|
-      host = double('GrayLog Instance')
-      allow(driver.instance).to receive(:endpoint) { host }
+  describe '#write' do
+    let(:endpoint) { StringIO.new }
 
-      expect(host).to receive(:write).once.with(
-        "{\"version\":\"1.1\",\"host\":\"example.org\",\"short_message\":\"Hello world!\"}\u0000"
-      )
-      driver.emit({"version": "1.1","host":"example.org","short_message":"Hello world!"})
+    before do
+      allow(instance).to receive(:endpoint) { endpoint }
     end
+
+    context 'when the socket is open' do
+      it "writes messages" do
+        expect(endpoint).to receive(:write).once.with(
+          "{\"verion\":\"1.1\"}\u0000"
+        )
+        driver.run { driver.emit({verion: '1.1'}) }
+      end
+    end
+
+    context 'when the socket is closed' do
+      before do
+        allow(endpoint).to receive(:closed?).and_return(true)
+      end
+
+      it 're-opens the socket' do
+        expect(endpoint).to receive(:write).once.with(
+          "{\"verion\":\"1.1\"}\u0000"
+        )
+        driver.run { driver.emit({verion: '1.1'}) }
+      end
+    end
+  end
+
+  describe '#format' do
+    it 'returns the record as msgpack'
   end
 end
