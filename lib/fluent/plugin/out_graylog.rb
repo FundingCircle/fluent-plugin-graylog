@@ -1,5 +1,4 @@
-# require "fluent/plugin/graylog/version"
-
+# rubocop:disable Style/NumericLiterals
 module Fluent
   class GrayLogOutput < BufferedOutput
     Plugin.register_output('graylog', self)
@@ -15,7 +14,7 @@ module Fluent
 
     def configure(conf)
       super
-      raise ConfigError, "'host' parameter required" unless conf.has_key?('host')
+      fail ConfigError, "'host' parameter required" unless conf.key?('host')
     end
 
     def start
@@ -27,7 +26,7 @@ module Fluent
       endpoint.close unless endpoint.closed?
     end
 
-    def format(tag, time, record)
+    def format(_tag, _time, record)
       # Record must already be in GELF
       record.to_msgpack
     end
@@ -51,3 +50,4 @@ module Fluent
     end
   end
 end
+# rubocop:enable Style/NumericLiterals
