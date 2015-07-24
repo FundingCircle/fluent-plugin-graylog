@@ -10,3 +10,7 @@ TODO
 ## Configuration
 TODO
 
+## License
+Copyright © 2015 Funding Circle Ltd.
+
+Distributed under the BSD 3-Clause License.
