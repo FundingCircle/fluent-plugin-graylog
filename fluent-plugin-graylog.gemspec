@@ -1,5 +1,4 @@
 # coding: utf-8
-# rubocop:disable Metrics/LineLength
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
@@ -18,6 +17,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.required_ruby_version = '>= 1.9.3'
+
   spec.add_runtime_dependency 'fluentd', '~> 0.12'
 
   spec.add_development_dependency 'rake', '~> 10.0'
@@ -26,4 +27,3 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry', '~> 0.10'
   spec.add_development_dependency 'rubocop', '~> 0.32'
 end
-# rubocop:enable Metrics/LineLength
