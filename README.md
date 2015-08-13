@@ -1,4 +1,8 @@
-# [GrayLog](http://graylog.org) plugin for [Fluentd](http://fluentd.org) [![Build Status](https://circleci.com/gh/FundingCircle/fluent-plugin-graylog/tree/master.svg?style=shield&circle-token=532f50099abc19d39f00c89faa39e4d85de12788)](https://circleci.com/gh/FundingCircle/fluent-plugin-graylog/tree/master)
+# [GrayLog](http://graylog.org) plugin for [Fluentd](http://fluentd.org)
+
+[![Build Status](https://circleci.com/gh/FundingCircle/fluent-plugin-graylog/tree/master.svg?style=shield&circle-token=532f50099abc19d39f00c89faa39e4d85de12788)](https://circleci.com/gh/FundingCircle/fluent-plugin-graylog/tree/master)
+[![Code Climate](https://codeclimate.com/github/FundingCircle/fluent-plugin-graylog/badges/gpa.svg)](https://codeclimate.com/github/FundingCircle/fluent-plugin-graylog)
+[![Test Coverage](https://codeclimate.com/github/FundingCircle/fluent-plugin-graylog/badges/coverage.svg)](https://codeclimate.com/github/FundingCircle/fluent-plugin-graylog/coverage)
 
 [fluentd](http://fluentd.org) output plugin for GrayLog.
 
