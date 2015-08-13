@@ -1,3 +1,6 @@
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start if ENV.fetch('CODECLIMATE_REPO_TOKEN', nil)
+
 require 'pry'
 
 require 'fluent/load'
