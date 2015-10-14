@@ -8,7 +8,7 @@
 
 ## Installation
 
-This plugin is not available as a Gem.
+    gem install fluentd-plugin-graylog
 
 ## Configuration
 
