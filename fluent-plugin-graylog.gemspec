@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Funding Circle']
   spec.email         = ['engineering@fundingcircle.com']
 
-  spec.summary       = 'GrayLog output plugin for Fluentd'
-  spec.description   = 'Send logging information in JSON format via TCP to an instance of GrayLog'
+  spec.summary       = 'Graylog output plugin for Fluentd'
+  spec.description   = 'Send logging information in JSON format via TCP to an instance of Graylog'
   spec.license       = 'BSD-3-Clause'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec|features)/}) }
