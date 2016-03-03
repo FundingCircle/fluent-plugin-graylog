@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 1.9.3'
 
   spec.add_runtime_dependency 'fluentd', '~> 0.12'
+  spec.add_runtime_dependency 'yajl', '~> 0.3'
 
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.3'
