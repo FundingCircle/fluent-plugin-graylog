@@ -1,6 +1,10 @@
 Style/Documentation:
   Enabled: false
 
-Style/TrailingComma:
+Style/TrailingCommaInArguments:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInLiteral:
   Enabled: true
   EnforcedStyleForMultiline: comma
