@@ -15,7 +15,7 @@ module Fluent
 
     def configure(conf)
       super
-      fail ConfigError, "'host' parameter required" unless conf.key?('host')
+      raise ConfigError, "'host' parameter required" unless conf.key?('host')
     end
 
     def start
