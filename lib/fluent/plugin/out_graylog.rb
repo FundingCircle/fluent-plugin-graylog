@@ -35,7 +35,7 @@ module Fluent
     def write(chunk)
       records = []
       chunk.msgpack_each do |record|
-        records.push JSON.dump(record) + "\0" # Message delimited by null char
+        records.push Yajl.dump(record) + "\0" # Message delimited by null char
       end
 
       log.debug 'establishing connection with GrayLog'
