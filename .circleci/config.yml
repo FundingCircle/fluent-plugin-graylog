@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ruby:alpine
+    steps:
+      - checkout
+      - run: apk add --no-cache gcc git libc-dev make
+      - run: bundle check || bundle install --jobs 4
+      - run: bundle exec rake --trace
+    working_directory: /fluent-plugin-graylog
