@@ -8,4 +8,5 @@ jobs:
       - run: apk add --no-cache gcc git libc-dev make
       - run: bundle check || bundle install --jobs 4
       - run: bundle exec rake --trace
+      - run: bundle exec codeclimate-test-reporter
     working_directory: /fluent-plugin-graylog

@@ -1,5 +1,5 @@
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start if ENV.fetch('CODECLIMATE_REPO_TOKEN', nil)
+require 'simplecov'
+SimpleCov.start if ENV.fetch('CODECLIMATE_REPO_TOKEN', nil)
 
 require 'pry'
 
