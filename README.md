@@ -11,7 +11,7 @@ A [Fluentd](http://fluentd.org) output plugin for [Graylog][graylog].
 
 ## Installation
 
-    gem install fluentd-plugin-graylog
+    gem install fluent-plugin-graylog
 
 ## Configuration
 
