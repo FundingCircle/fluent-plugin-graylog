@@ -2,6 +2,10 @@ Metrics/LineLength:
   Exclude:
     - '*.gemspec'
 
+Style/BlockLength:
+  Exclude:
+    - spec/*_spec.rb
+
 Style/Documentation:
   Enabled: false
 

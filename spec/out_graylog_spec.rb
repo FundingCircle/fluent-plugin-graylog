@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Fluent::GrayLogOutput do
+RSpec.describe Fluent::GrayLogOutput do
   let(:driver) do
     Fluent::Test.setup
     Fluent::Test::OutputTestDriver.new(Fluent::GrayLogOutput).configure(config)
