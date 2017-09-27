@@ -1,6 +1,21 @@
+machine:
+  post:
+    - |
+      for ruby_version in 2.2.8 2.3.5 2.4.2
+      do
+        if [[ -e ~/rvm_binaries/ruby-${ruby_version}.tar.bz2 ]]
+        then
+          rvm mount ~/rvm_binaries/ruby-$ru{ruby_version}.tar.bz2
+        else
+          mkdir -p ~/rvm_binaries
+          rvm install $ruby_version
+          cd ~/rvm_binaries && rvm prepare $ruby_version
+        fi
+      done
 dependencies:
   cache_directories:
-    - "/opt/circleci/.rvm/gems"
+    - /opt/circleci/.rvm/gems
+    - ~/rvm_binaries
   override:
     - bundle install
     - bundle exec wwtd --only-bundle
