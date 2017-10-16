@@ -9,3 +9,12 @@ test:
     - bundle exec wwtd
   post:
     - bundle exec codeclimate-test-reporter ${CIRCLE_ARTIFACTS}/coverage/.resultset.json
+deployment:
+  rubygems:
+    owner: FundingCircle
+    tag: /v.+/
+    commands:
+      - gem build ${CIRCLE_PROJECT_REPONAME}.gemspec
+      - echo :rubygems_api_key: ${RUBYGEMS_API_KEY} >  ~/.gem/credentials
+      - chmod 0600 ~/.gem/credentials
+      - gem push $CIRCLE_PROJECT_REPONAME-$(echo $CIRCLE_TAG | sed -e 's/v//').gem
